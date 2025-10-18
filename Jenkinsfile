@@ -11,7 +11,16 @@ pipeline {
     stage('Checkout') { steps { checkout scm } }
 
     stage('Build image') {
-      steps { sh 'set -eux; docker build -t ${ECR_REPO}:${GIT_COMMIT} .' }
+        steps {
+            sh '''
+            set -eux
+            docker buildx create --use --name jx || true
+            docker buildx inspect --bootstrap
+            docker buildx build --platform linux/amd64 \
+                -t ${ECR_REPO}:${GIT_COMMIT} \
+                --load .
+            '''
+        }
     }
 
     stage('Push to ECR') {
