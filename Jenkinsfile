@@ -2,8 +2,7 @@ pipeline {
   agent any
   options { timestamps() }
   environment {
-    AWS_REGION      = 'eu-west-1'
-    AWS             = credentials('aws-creds')      // already created in Jenkins
+    AWS_REGION      = 'eu-west-1'    // already created in Jenkins
     TARGET_INSTANCE = credentials('target-ec2-id')  // already created in Jenkins
     ECR_REPO        = 'demo-webapp'                 // <-- set to your ECR repo name
   }
